@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Vale Verde - Brasa & Sabor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --dark: #0B0B0B;
+            --dark2: #141414;
+            --accent: #C17A30;
+            --accent2: #8a4d1a;
+            --text-light: #E8E0D2;
+            --text-muted: #999;
+            --text-dark: #1a1a1a;
+            --success: #27ae60;
+            --green: #5E6A2E;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--dark); font-family: 'Montserrat', sans-serif; color: var(--text-light); overflow-x: hidden; line-height: 1.5; }
+
+        .hero { position: relative; width: 100%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1558030137-a56c1b003f9b?w=1600&q=80'); background-size: cover; background-position: center; filter: brightness(0.3); z-index: 0; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11,11,11,0.3) 0%, rgba(11,11,11,0.7) 60%, #0B0B0B 100%); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; padding: 20px; max-width: 800px; width: 100%; }
+        .logo-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 40px; }
+        .logo-wrap img { height: 80px; width: auto; filter: drop-shadow(0 0 20px rgba(94,106,46,0.6)); margin-bottom: 8px; }
+        .logo-wrap span { font-size: 11px; letter-spacing: 4px; color: var(--green); text-transform: uppercase; }
+        .hero-eyebrow { font-size: 12px; letter-spacing: 5px; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+        .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px, 16vw, 130px); line-height: 0.88; margin-bottom: 24px; letter-spacing: 2px; }
+        .hero-title .amp { color: var(--accent); font-size: 0.75em; }
+        .hero-sub { font-size: 14px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 50px; }
+        .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 15px 32px; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border: none; transition: all 0.3s ease; }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+        .btn-outline { background: transparent; color: var(--text-light); border: 1px solid rgba(255,255,255,0.25); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+        .scroll-hint { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px; opacity: 0.4; }
+        .scroll-hint span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; }
+        .scroll-hint .line { width: 1px; height: 40px; background: var(--text-light); animation: scrollLine 1.5s ease-in-out infinite; }
+        @keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+        .divider { width: 60px; height: 2px; background: var(--accent); margin: 0 auto 24px; }
+
+        .sobre { padding: 100px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
+        .sobre .eyebrow { font-size: 11px; letter-spacing: 4px; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+        .sobre h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 60px); line-height: 1; margin-bottom: 24px; }
+        .sobre p { font-size: 15px; color: #aaa; line-height: 1.8; max-width: 680px; margin: 0 auto 16px; }
+        .valores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); margin-top: 60px; border: 1px solid rgba(255,255,255,0.06); }
+        .valor-item { padding: 40px 20px; background: var(--dark); text-align: center; }
+        .valor-item i { font-size: 24px; color: var(--accent); margin-bottom: 12px; display: block; }
+        .valor-item h4 { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
+        .valor-item p { font-size: 12px; color: var(--text-muted); margin: 0; }
+
+        .produtos { padding: 100px 20px; background: var(--dark2); }
+        .produtos-inner { max-width: 1100px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header .eyebrow { font-size: 11px; letter-spacing: 4px; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+        .section-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 60px); line-height: 1; }
+        .produtos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: rgba(255,255,255,0.04); }
+        .produto-card { background: var(--dark2); padding: 50px 40px; cursor: pointer; transition: background 0.3s ease; position: relative; overflow: hidden; }
+        .produto-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.4s ease; }
+        .produto-card:hover::before { width: 100%; }
+        .produto-card:hover { background: #1a1a1a; }
+        .produto-num { font-size: 11px; letter-spacing: 3px; color: var(--accent); margin-bottom: 20px; font-weight: 600; }
+        .produto-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; line-height: 1; margin-bottom: 12px; }
+        .produto-card p { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
+        .produto-link { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+        .produto-link i { transition: transform 0.3s ease; }
+        .produto-card:hover .produto-link i { transform: translateX(5px); }
+
+        .contato { padding: 100px 20px; text-align: center; position: relative; overflow: hidden; }
+        .contato-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1600&q=80'); background-size: cover; background-position: center; filter: brightness(0.15); z-index: 0; }
+        .contato-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+        .contato .eyebrow { font-size: 11px; letter-spacing: 4px; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+        .contato h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 8vw, 72px); line-height: 1; margin-bottom: 20px; }
+        .contato p { font-size: 14px; color: #aaa; margin-bottom: 40px; line-height: 1.7; }
+        .btn-whatsapp { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #fff; padding: 18px 36px; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .btn-whatsapp:hover { background: #1ebe5d; transform: translateY(-2px); }
+        .btn-email { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: var(--text-light); padding: 18px 36px; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s ease; }
+        .btn-email:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+        .contato-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        footer { background: #050505; padding: 50px 20px 30px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 30px; }
+        .footer-logo img { height: 55px; filter: brightness(0.7); }
+        .footer-links { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+        .footer-links a { display: flex; align-items: center; gap: 8px; color: #666; text-decoration: none; font-size: 13px; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-links a i { color: var(--accent); font-size: 14px; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 24px; text-align: center; font-size: 11px; color: #444; width: 100%; line-height: 1.8; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.93); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(8px); padding: 20px; }
+        .modal-content { background: #fff; color: var(--text-dark); width: 100%; max-width: 700px; border-radius: 8px; position: relative; max-height: 88vh; overflow-y: auto; transform: translateY(24px); opacity: 0; transition: all 0.35s ease; }
+        .modal-overlay.active .modal-content { transform: translateY(0); opacity: 1; }
+        .modal-header { padding: 30px 30px 0; border-bottom: 1px solid #eee; }
+        .modal-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); margin-bottom: 4px; }
+        .modal-header p { font-size: 13px; color: #888; margin-bottom: 20px; }
+        .modal-body { padding: 24px 30px 30px; }
+        .close-button { position: absolute; top: 16px; right: 20px; font-size: 26px; cursor: pointer; color: #bbb; line-height: 1; z-index: 10; }
+        .close-button:hover { color: #333; }
+
+        .tabs-nav { display: flex; border-bottom: 1px solid #eee; margin-bottom: 24px; }
+        .tab-btn { background: none; border: none; padding: 12px 20px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 12px; color: #aaa; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .tab-pane { display: none; animation: fadeIn 0.25s ease; }
+        .tab-pane.active { display: block; }
+
+        .nutri-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+        .nutri-table th, .nutri-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; text-align: left; }
+        .nutri-table th { background: #fafafa; color: #888; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+        .nutri-table tr:last-child td { border-bottom: none; }
+
+        .info-section { margin-bottom: 22px; }
+        .info-section h4 { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #f0f0f0; }
+        .info-section ul { padding-left: 16px; }
+        .info-section ul li { font-size: 13px; color: #555; line-height: 1.7; margin-bottom: 4px; }
+        .tip-box { background: #fdf9f4; border-left: 3px solid var(--accent); padding: 14px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; }
+        .tip-box strong { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 4px; }
+        .tip-box p { font-size: 13px; color: #666; margin: 0; line-height: 1.6; }
+        .obs-box { font-size: 11px; color: #aaa; border-top: 1px solid #f0f0f0; padding-top: 12px; margin-top: 16px; line-height: 1.8; }
+
+        .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
+        .product-card { padding: 28px 20px; border: 1px solid #eee; border-radius: 6px; cursor: pointer; transition: all 0.25s ease; text-align: left; }
+        .product-card:hover { border-color: var(--accent); background: #fdf9f4; }
+        .product-card i { font-size: 24px; color: var(--accent); margin-bottom: 12px; display: block; }
+        .product-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--text-dark); margin-bottom: 4px; }
+        .product-card p { font-size: 12px; color: #aaa; margin: 0; }
+        .back-btn { background: var(--dark); color: #fff; border: none; padding: 14px 24px; border-radius: 4px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-top: 20px; width: 100%; transition: background 0.2s; }
+        .back-btn:hover { background: #222; }
+
+        .trust-badges { display: flex; justify-content: center; gap: 30px; padding: 20px 0; border-top: 1px solid #f0f0f0; margin-top: 20px; }
+        .badge-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #aaa; }
+        .badge-item i { font-size: 20px; color: var(--success); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 600px) {
+            .valores { grid-template-columns: 1fr; }
+            .produtos-grid { grid-template-columns: 1fr; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .produto-card { padding: 36px 24px; }
+            .modal-header { padding: 24px 20px 0; }
+            .modal-body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="logo-wrap">
+            <img src="HJAJa.png" alt="Vale Verde">
+            <span>Vale Verde</span>
+        </div>
+        <p class="hero-eyebrow">Linha Premium de Temperos</p>
+        <h1 class="hero-title">BRASA <span class="amp">&</span><br>SABOR</h1>
+        <p class="hero-sub">Equilíbrio entre sal e brasa</p>
+        <div class="hero-btns">
+            <button class="btn btn-primary" onclick="toggleModal('portfolioModal', true)">Ver Produtos</button>
+            <button class="btn btn-outline" onclick="document.getElementById('sobre').scrollIntoView({behavior:'smooth'})">Sobre Nós</button>
+        </div>
+    </div>
+    <div class="scroll-hint">
+        <span>Scroll</span>
+        <div class="line"></div>
+    </div>
+</section>
+
+<section class="sobre" id="sobre">
+    <p class="eyebrow">Nossa história</p>
+    <div class="divider"></div>
+    <h2>Tradição e sabor<br>em cada preparo</h2>
+    <p>Vale Verde é uma marca voltada ao desenvolvimento de produtos alimentícios com foco em qualidade e padronização, levando a experiência das grandes churrascarias diretamente para sua casa.</p>
+    <p>A linha Brasa & Sabor nasceu para atender o preparo moderno, com foco em carnes, grelhados e finalizações — oferecendo soluções práticas que valorizam o sabor natural dos alimentos.</p>
+    <div class="valores">
+        <div class="valor-item">
+            <i class="fas fa-fire"></i>
+            <h4>Brasa</h4>
+            <p>Paixão pelo churrasco e pelo sabor autêntico</p>
+        </div>
+        <div class="valor-item">
+            <i class="fas fa-leaf"></i>
+            <h4>Natural</h4>
+            <p>Ingredientes selecionados de qualidade superior</p>
+        </div>
+        <div class="valor-item">
+            <i class="fas fa-balance-scale"></i>
+            <h4>Equilíbrio</h4>
+            <p>Temperos para realçar o sabor sem mascarar</p>
+        </div>
+    </div>
+</section>
+
+<section class="produtos" id="produtos">
+    <div class="produtos-inner">
+        <div class="section-header">
+            <p class="eyebrow">Portfólio</p>
+            <div class="divider"></div>
+            <h2>Nossos Produtos</h2>
+        </div>
+        <div class="produtos-grid">
+            <div class="produto-card" onclick="openDetail('detailSal')">
+                <p class="produto-num">01</p>
+                <h3>Sal Parrilla</h3>
+                <p>Granulometria ideal para uma salga uniforme sem desidratar a carne. Perfeito para costela, picanha e chorizo.</p>
+                <span class="produto-link">Ver detalhes <i class="fas fa-arrow-right"></i></span>
+            </div>
+            <div class="produto-card" onclick="openDetail('detailRub')">
+                <p class="produto-num">02</p>
+                <h3>Dry Rubs</h3>
+                <p>Tempero seco para criar crosta caramelizada em cortes especiais. A escolha certa para costela e brisket.</p>
+                <span class="produto-link">Ver detalhes <i class="fas fa-arrow-right"></i></span>
+            </div>
+            <div class="produto-card" onclick="openDetail('detailBlend')">
+                <p class="produto-num">03</p>
+                <h3>Batata Crocante</h3>
+                <p>Blend especial para máxima crocância no forno ou airfryer. Resultado profissional em casa.</p>
+                <span class="produto-link">Ver detalhes <i class="fas fa-arrow-right"></i></span>
+            </div>
+            <div class="produto-card" onclick="openDetail('detailDefumado')">
+                <p class="produto-num">04</p>
+                <h3>Defumados</h3>
+                <p>Notas marcantes de fumaça natural para a experiência autêntica do American BBQ em qualquer preparo.</p>
+                <span class="produto-link">Ver detalhes <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contato" id="contato">
+    <div class="contato-bg"></div>
+    <div class="contato-inner">
+        <p class="eyebrow">Fale conosco</p>
+        <div class="divider"></div>
+        <h2>Vamos fazer negócio?</h2>
+        <p>Entre em contato pelo WhatsApp ou email para pedidos, revendas e mais informações sobre nossos produtos.</p>
+        <div class="contato-btns">
+            <a href="https://wa.me/5531999708180" class="btn-whatsapp" target="_blank">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="mailto:contato@empresavaleverde.com" class="btn-email">
+                <i class="fas fa-envelope"></i> E-mail
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-logo">
+            <img src="HJAJa.png" alt="Vale Verde">
+        </div>
+        <div class="footer-links">
+            <a href="https://wa.me/5531999708180" target="_blank"><i class="fab fa-whatsapp"></i> (31) 9 9970-8180</a>
+            <a href="mailto:contato@empresavaleverde.com"><i class="fas fa-envelope"></i> contato@empresavaleverde.com</a>
+            <a href="#"><i class="fas fa-map-marker-alt"></i> Minas Gerais, Brasil</a>
+        </div>
+        <div class="footer-bottom">
+            <p>CNPJ: 67.116.078/0001-47 &nbsp;|&nbsp; Vale Verde Alimentos Ltda.</p>
+            <p style="margin-top:8px;">&copy; 2026 Vale Verde. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+<div id="infoModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="toggleModal('infoModal', false)">&times;</span>
+        <div class="modal-header">
+            <h2>Sobre Nós</h2>
+            <p>Vale Verde Alimentos Ltda.</p>
+        </div>
+        <div class="modal-body">
+            <div style="color:#444;font-size:14px;line-height:1.8;">
+                <p style="margin-bottom:14px;"><strong>Vale Verde</strong> é uma marca voltada ao desenvolvimento de produtos alimentícios com foco em qualidade e padronização, levando a experiência das grandes churrascarias diretamente para sua casa.</p>
+                <p style="margin-bottom:14px;">Dentro do portfólio, nasce <strong>Brasa & Sabor</strong>, uma linha de temperos desenvolvida para atender o preparo moderno, com foco em carnes, grelhados e finalizações.</p>
+                <p style="margin-bottom:14px;">Com proposta de qualidade acessível e aplicação profissional, Brasa & Sabor se posiciona como uma marca voltada para quem busca consistência, equilíbrio e resultado no preparo.</p>
+                <div style="background:#fdf9f4;border-left:3px solid #C17A30;padding:16px;margin:20px 0;border-radius:0 4px 4px 0;">
+                    <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#C17A30;margin-bottom:6px;font-weight:700;">Nosso princípio</p>
+                    <p style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#1a1a1a;margin:0;">Equilíbrio entre sal e brasa.</p>
+                </div>
+            </div>
+            <div class="trust-badges">
+                <div class="badge-item"><i class="fas fa-check-circle"></i><span>Qualidade</span></div>
+                <div class="badge-item"><i class="fas fa-shield-alt"></i><span>Segurança</span></div>
+                <div class="badge-item"><i class="fas fa-leaf"></i><span>Natural</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="portfolioModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="toggleModal('portfolioModal', false)">&times;</span>
+        <div class="modal-header">
+            <h2>Produtos</h2>
+            <p>Linha Brasa & Sabor</p>
+        </div>
+        <div class="modal-body">
+            <div class="portfolio-grid">
+                <div class="product-card" onclick="openDetail('detailSal')"><i class="fas fa-mortar-pestle"></i><h3>Sal Parrilla</h3><p>Tradicional e defumado</p></div>
+                <div class="product-card" onclick="openDetail('detailRub')"><i class="fas fa-fire"></i><h3>Dry Rubs</h3><p>Rub costela e blends</p></div>
+                <div class="product-card" onclick="openDetail('detailBlend')"><i class="fas fa-utensils"></i><h3>Batata Crocante</h3><p>Tempero especial</p></div>
+                <div class="product-card" onclick="openDetail('detailDefumado')"><i class="fas fa-smog"></i><h3>Defumados</h3><p>American BBQ style</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="detailSal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="toggleModal('detailSal', false)">&times;</span>
+        <div class="modal-header"><h2>Sal Parrilla</h2><p>Granulometria ideal para uma salga uniforme sem desidratar a carne.</p></div>
+        <div class="modal-body">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab('detailSal','visaoGeralSal')">Visão Geral</button>
+                <button class="tab-btn" onclick="switchTab('detailSal','maisInfoSal')">Informações</button>
+            </div>
+            <div id="visaoGeralSal" class="tab-pane active">
+                <div class="info-section"><h4>Como Usar</h4><ul><li>Ideal para costela, picanha, chorizo, frango, legumes e carnes na brasa.</li><li>Aplique generosamente nas carnes antes de levar à parrilla.</li><li>Use cerca de 1 colher de sopa para cada 500g–700g de carne.</li><li>Para melhor resultado: tempere e deixe descansar 30 a 60 min antes de assar.</li></ul></div>
+                <div class="tip-box"><strong>Dica profissional</strong><p>Nos últimos 5-10 minutos na brasa, passe mais uma leve camada do sal para realçar o sabor final.</p></div>
+            </div>
+            <div id="maisInfoSal" class="tab-pane">
+                <div class="info-section"><h4>Tabela Nutricional — por 100g</h4><table class="nutri-table"><tr><th>Componente</th><th>Quantidade</th></tr><tr><td>Valor Energético</td><td>160 kcal</td></tr><tr><td>Carboidratos</td><td>28 g</td></tr><tr><td>Proteínas</td><td>6 g</td></tr><tr><td>Gorduras</td><td>4 g</td></tr><tr><td>Sódio</td><td>37.000 mg</td></tr></table></div>
+                <div class="obs-box"><p>*% Valores Diários com base em uma dieta de 2.000 kcal. Alto teor de sódio.</p><p><strong>Contém glúten?</strong> Não &nbsp;|&nbsp; <strong>Contém lactose?</strong> Não</p></div>
+            </div>
+            <button class="back-btn" onclick="backToPortfolio('detailSal')">← Voltar aos Produtos</button>
+        </div>
+    </div>
+</div>
+
+<div id="detailRub" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="toggleModal('detailRub', false)">&times;</span>
+        <div class="modal-header"><h2>Dry Rubs</h2><p>Tempero seco para criar crosta caramelizada em cortes especiais.</p></div>
+        <div class="modal-body">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab('detailRub','visaoGeralRub')">Visão Geral</button>
+                <button class="tab-btn" onclick="switchTab('detailRub','maisInfoRub')">Informações</button>
+            </div>
+            <div id="visaoGeralRub" class="tab-pane active">
+                <div class="info-section"><h4>Como Usar</h4><ul><li>Remova o excesso de umidade da carne com papel-toalha.</li><li>Aplique uma camada generosa do rub em todos os lados da costela.</li><li>Pressione bem para aderir.</li><li>Deixe descansar no mínimo 2 horas (ideal de 6 a 12h na geladeira, ou até 24h).</li><li>Asse ou fume conforme sua preferência.</li></ul></div>
+                <div class="tip-box"><strong>Dica para crosta caramelizada</strong><p>Nos últimos 30-45 min de cocção, pincele com mel + molho barbecue diluído para potencializar a caramelização.</p></div>
+            </div>
+            <div id="maisInfoRub" class="tab-pane">
+                <div class="info-section"><h4>Tabela Nutricional — por 100g</h4><table class="nutri-table"><tr><th>Componente</th><th>Quantidade</th></tr><tr><td>Valor Energético</td><td>240 kcal</td></tr><tr><td>Carboidratos</td><td>46 g</td></tr><tr><td>Proteínas</td><td>8 g</td></tr><tr><td>Gorduras</td><td>6 g</td></tr><tr><td>Sódio</td><td>7.600 mg</td></tr></table></div>
+                <div class="obs-box"><p>*% Valores Diários com base em uma dieta de 2.000 kcal.</p><p><strong>Contém glúten?</strong> Não &nbsp;|&nbsp; <strong>Contém lactose?</strong> Não</p></div>
+            </div>
+            <button class="back-btn" onclick="backToPortfolio('detailRub')">← Voltar aos Produtos</button>
+        </div>
+    </div>
+</div>
+
+<div id="detailBlend" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="toggleModal('detailBlend', false)">&times;</span>
+        <div class="modal-header"><h2>Batata Crocante</h2><p>Soluções práticas que valorizam o sabor natural e trazem máxima crocância.</p></div>
+        <div class="modal-body">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab('detailBlend','visaoGeralBlend')">Visão Geral</button>
+                <button class="tab-btn" onclick="switchTab('detailBlend','maisInfoBlend')">Informações</button>
+            </div>
+            <div id="visaoGeralBlend" class="tab-pane active">
+                <div class="info-section"><h4>Como Usar — Airfryer ou Forno</h4><ul><li>Corte as batatas em gomos ou palitos (com casca fica mais bonito).</li><li>Lave bem para tirar o amido e seque muito bem com papel toalha.</li><li>Regue com um fio de óleo (ou azeite) e misture.</li><li>Polvilhe generosamente o tempero (cerca de 25-30g por kg de batata).</li><li>Airfryer: 200°C por 18-25 minutos (agite na metade).</li><li>Forno: 220°C por 35-45 minutos (virando no meio).</li></ul></div>
+                <div class="tip-box"><strong>Dica de ouro</strong><p>Para ficar extra crocante, adicione 1 colher de sopa de polvilho azedo ou amido de milho junto com o tempero nas batatas.</p></div>
+            </div>
+            <div id="maisInfoBlend" class="tab-pane">
+                <div class="info-section"><h4>Tabela Nutricional — por 100g</h4><table class="nutri-table"><tr><th>Componente</th><th>Quantidade</th></tr><tr><td>Valor Energético</td><td>280 kcal</td></tr><tr><td>Carboidratos</td><td>52 g</td></tr><tr><td>Proteínas</td><td>12 g</td></tr><tr><td>Gorduras</td><td>6 g</td></tr><tr><td>Sódio</td><td>9.200 mg</td></tr></table></div>
+                <div class="obs-box"><p>*% Valores Diários com base em uma dieta de 2.000 kcal.</p><p><strong>Contém glúten?</strong> Não &nbsp;|&nbsp; <strong>Contém lactose?</strong> Sim (queijo parmesão em pó)</p></div>
+            </div>
+            <button class="back-btn" onclick="backToPortfolio('detailBlend')">← Voltar aos Produtos</button>
+        </div>
+    </div>
+</div>
+
+<div id="detailDefumado" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="toggleModal('detailDefumado', false)">&times;</span>
+        <div class="modal-header"><h2>Defumados</h2><p>Notas marcantes de fumaça natural para a experiência autêntica do American BBQ.</p></div>
+        <div class="modal-body">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab('detailDefumado','visaoGeralDef')">Visão Geral</button>
+                <button class="tab-btn" onclick="switchTab('detailDefumado','maisInfoDef')">Informações</button>
+            </div>
+            <div id="visaoGeralDef" class="tab-pane active">
+                <div class="info-section"><h4>Como Usar</h4><ul><li>Tempere carnes generosamente (1 colher de sopa para cada 500-600g de carne).</li><li>Ideal para: costela, picanha, brisket, frango, linguiça e legumes.</li><li>Deixe agir de 40 minutos a 4 horas (para mais sabor defumado).</li><li>Excelente tanto na parrilla tradicional quanto no smoker ou forno.</li></ul></div>
+                <div class="tip-box"><strong>Dica para crosta</strong><p>Nos últimos 10 minutos de cocção, aplique mais uma leve camada do sal defumado para intensificar o sabor e a cor.</p></div>
+            </div>
+            <div id="maisInfoDef" class="tab-pane">
+                <div class="info-section"><h4>Tabela Nutricional — por 100g</h4><table class="nutri-table"><tr><th>Componente</th><th>Quantidade</th></tr><tr><td>Valor Energético</td><td>180 kcal</td></tr><tr><td>Carboidratos</td><td>32 g</td></tr><tr><td>Proteínas</td><td>8 g</td></tr><tr><td>Gorduras</td><td>4 g</td></tr><tr><td>Sódio</td><td>35.600 mg</td></tr></table></div>
+                <div class="obs-box"><p>*% Valores Diários com base em uma dieta de 2.000 kcal. Alto teor de sódio.</p><p><strong>Contém glúten?</strong> Não &nbsp;|&nbsp; <strong>Contém lactose?</strong> Não</p></div>
+            </div>
+            <button class="back-btn" onclick="backToPortfolio('detailDefumado')">← Voltar aos Produtos</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleModal(id, show) {
+        const modal = document.getElementById(id);
+        if (show) { modal.style.display="flex"; setTimeout(()=>modal.classList.add('active'),10); document.body.style.overflow='hidden'; }
+        else { modal.classList.remove('active'); setTimeout(()=>{ modal.style.display="none"; if(!document.querySelector('.modal-overlay.active')) document.body.style.overflow=''; },350); }
+    }
+    function openDetail(id) { toggleModal('portfolioModal',false); setTimeout(()=>toggleModal(id,true),380); }
+    function backToPortfolio(id) { toggleModal(id,false); setTimeout(()=>toggleModal('portfolioModal',true),380); }
+    function switchTab(modalId, tabPaneId) {
+        const modal = document.getElementById(modalId);
+        if(!modal) return;
+        modal.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+        modal.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+        const btn = Array.from(modal.querySelectorAll('.tab-btn')).find(b=>b.getAttribute('onclick').includes(tabPaneId));
+        if(btn) btn.classList.add('active');
+        const pane = document.getElementById(tabPaneId);
+        if(pane) pane.classList.add('active');
+    }
+    window.onclick = (e) => { if(e.target.classList.contains('modal-overlay')) toggleModal(e.target.id,false); }
+</script>
+</body>
+</html>
